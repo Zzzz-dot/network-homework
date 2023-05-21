@@ -1,7 +1,9 @@
 #include "poll/EpollPoller.h"
 #include "Channel.h"
+#include <cstdio>
 #include <poll.h>
 #include <sys/epoll.h>
+#include <glog/logging.h>
 #include <unistd.h>
 
 const int kNew = -1;
@@ -32,11 +34,11 @@ TimeStamp EpollPoller::Poll(int timeoutMs, ChannelList& activeChannels)
         if (static_cast<size_t>(numEvents) == events_.size()) {
             events_.resize(events_.size() * 2);
         }
-    } 
-    else if (numEvents == 0) {
+    } else if (numEvents == 0) {
+        LOG(INFO)<<"EpollPoller time out after "<<timeoutMs<<" ms\n";
         // nothing to do
     } else {
-        // error happens, log uncommon ones
+        LOG(ERROR) << "EpollPoller error " << strerror(savedErrno) << " \n";
     }
     return now;
 }

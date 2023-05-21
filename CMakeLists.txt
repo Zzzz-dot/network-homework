@@ -11,6 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+find_package (glog 0.6.0 REQUIRED)
+
 include_directories(include)
 
 add_subdirectory(src)

@@ -23,7 +23,7 @@ private:
     NewConnectionCallback newConnectionCallback_;
 
 private:
-    void handleRead();
+    void handleRead(TimeStamp timeStamp,int bid, void *buf);
 };
 
 #endif

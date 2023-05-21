@@ -1,6 +1,7 @@
 #include "TCPServer.h"
 #include "TCPConn.h"
 #include "util.hpp"
+#include <glog/logging.h>
 
 void TCPServer::Start()
 {
@@ -16,6 +17,7 @@ TCPServer::TCPServer(const sockaddr_in& listenAddr, const std::string& name, int
     : started_(false)
     , name_(name)
     , numThreads_(numThread)
+    , nextConnId_(0)
     , acceptor_(&baseLoop_, listenAddr)
     , threadPool_(&baseLoop_, numThreads_, name_)
 
@@ -26,14 +28,16 @@ TCPServer::TCPServer(const sockaddr_in& listenAddr, const std::string& name, int
 void TCPServer::newConnection(int connfd, const sockaddr_in& peerAddr)
 {
     EventLoop* loop = threadPool_.GetNextLoop();
-    std::string connName=name_+convertAddr(peerAddr)+"#"+std::to_string(nextConnId_);
+    std::string connName = name_ + convertAddr(peerAddr) + "#" + std::to_string(nextConnId_);
+    nextConnId_++;
 
-    printf("TcpServer::newConnection [%s]\n",connName.c_str());
+    LOG(INFO) << "Create newConnection " << connName << "\n";
 
     sockaddr_in localAddr;
     socklen_t len;
     getsockname(connfd, (sockaddr*)&localAddr, &len);
 
+    LOG(INFO)<<"LocalAddr: "<<convertAddr(localAddr)<<", PeerAddr: "<<convertAddr(peerAddr)<<"\n";
 
     TCPConnPtr conn=new TCPConn(loop,connfd,connName,localAddr,peerAddr);
     connections_[connName] = conn;

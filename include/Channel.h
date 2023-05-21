@@ -5,12 +5,24 @@
 // FileChannel 两个事件：可读和可写
 // TCPChannel 四个事件：可读、可写、关闭、错误
 class EventLoop;
-enum ChannelType { TCPType, FILEType };
+enum ChannelType { TCPType,
+    FILEType };
+enum {
+    PROV_BUFFER,
+    READ,
+    WRITE,
+    ERROR,
+};
 class Channel {
 public:
-    using ChannelEventCallback = std::function<void(int)>;
-    Channel(EventLoop* loop)
-        : loop_(loop) {};
+    using ChannelEventCallback = std::function<void(int, int, void*)>;
+    Channel(int fd, EventLoop* loop)
+        : events_(0)
+        , fd_(fd)
+        , state_(-1)
+        , loop_(loop)
+        , revents_(0)
+        , bid_(-1) {};
 
     ChannelType Type() const { return type; }
 
@@ -31,6 +43,10 @@ public:
     {
         errorCallback_ = cb;
     }
+    bool IsEnableReading()
+    {
+        return events_ & READ;
+    }
     void EnableReading()
     {
         events_ |= kReadEvent;
@@ -40,6 +56,10 @@ public:
     {
         events_ &= ~kReadEvent;
         update();
+    }
+    bool IsEnableWriting()
+    {
+        return events_ & WRITE;
     }
     void EnableWriting()
     {
@@ -51,16 +71,27 @@ public:
         events_ &= ~kWriteEvent;
         update();
     }
-    void DisableAll()
+    bool IsProvBuffer()
     {
-        events_ = kNoneEvent;
-        update();
+        return events_ & PROV_BUFFER;
     }
+    void ProvBuffer()
+    {
+        events_ |= PROV_BUFFER;
+        update();
+        events_ &= ~PROV_BUFFER;
+    }
+    void Remove();
+
     int Events() const { return events_; }
     void SetRevent(int event)
     {
         revents_ = event;
     }
+    void SetBid(int bid) { bid_ = bid; }
+    int GetBid() const { return bid_; }
+    void SetBuf(void* buf) { buf_ = buf; }
+    void* GetBuf() { return buf_; }
     int FD() const { return fd_; }
     int State() const { return state_; }
     void SetState(int state) { state_ = state; }
@@ -84,6 +115,8 @@ private:
 protected:
     ChannelType type;
     int revents_;
+    int bid_;
+    void* buf_;
     ChannelEventCallback readCallback_;
     ChannelEventCallback writeCallback_;
     ChannelEventCallback closeCallback_;
@@ -92,8 +125,8 @@ protected:
 
 class TCPChannel : public Channel {
 public:
-    TCPChannel(EventLoop* loop)
-        : Channel(loop)
+    TCPChannel(int fd, EventLoop* loop)
+        : Channel(fd, loop)
     {
         type = ChannelType::TCPType;
     }

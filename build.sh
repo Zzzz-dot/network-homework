@@ -7,11 +7,17 @@ function do_init
     git submodule update
     current_dir=$PWD
 
-    # build libevent
+    # build uring
     cd ${TOPDIR}/deps/liburing && \ 
-    ./configure
+    ./configure && \
     make -j4 && \
     make install
+
+    # build glog
+    cd ${TOPDIR}/deps/glog && \ 
+    cmake -S . -B build -G "Unix Makefiles" && \
+    # cmake --build build && \
+    cmake --build build --target install
 
     cd $current_dir
 }
@@ -19,6 +25,12 @@ function do_init
 function do_build
 {
     echo "do build"
+    current_dir=$PWD
+    
+    cd ${TOPDIR}/build && \ 
+    cmake --build .
+
+    cd $current_dir
 }
 
 function main

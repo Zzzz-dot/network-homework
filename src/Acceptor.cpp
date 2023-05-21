@@ -1,15 +1,19 @@
 #include "Acceptor.h"
+#include "LinuxHead.h"
+#include "util.hpp"
+#include <glog/logging.h>
+
 
 Acceptor::Acceptor(EventLoop* loop, const sockaddr_in& listenAddr)
     : listening_(false)
-    , listenfd_(-1)
+    , listenfd_(socket(AF_INET, SOCK_STREAM, 0))
     , listenAddr_(listenAddr)
     , loop_(loop)
-    , acceptChannel_(loop)
+    , acceptChannel_(listenfd_,loop)
 {
-    listenfd_ = socket(AF_INET, SOCK_STREAM, 0);
+    // listenfd_ = socket(AF_INET, SOCK_STREAM, 0);
     bind(listenfd_, (sockaddr*)&listenAddr_, sizeof(listenAddr_));
-    acceptChannel_.SetReadCallback(std::bind(&Acceptor::handleRead, this));
+    acceptChannel_.SetReadCallback(std::bind(&Acceptor::handleRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 }
 
 void Acceptor::Listen()
@@ -22,21 +26,20 @@ void Acceptor::Listen()
     }
 }
 
-void Acceptor::handleRead()
+void Acceptor::handleRead(TimeStamp timeStamp,int bid=-1, void* buf=nullptr)
 {
     sockaddr_in peerAddr;
     socklen_t addrLen;
     // FIXME loop until no more
-    int connfd = accept(listenfd_, (sockaddr*)&listenAddr_, &addrLen);
+    int connfd = accept(listenfd_, (sockaddr*)&peerAddr, &addrLen);
     if (connfd >= 0) {
-        // string hostport = peerAddr.toIpPort();
-        // LOG_TRACE << "Accepts of " << hostport;
+        LOG(INFO) << "Accept connection from " << convertAddr(peerAddr) <<" at "<<timeStamp<< "\n";
         if (newConnectionCallback_) {
             newConnectionCallback_(connfd, peerAddr);
         } else {
             close(connfd);
         }
     } else {
-        return;
+        LOG(ERROR) << "Fail to accept connection\n";
     }
 }
