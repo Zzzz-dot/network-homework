@@ -5,6 +5,7 @@
 const int Channel::kNoneEvent = 0;
 const int Channel::kReadEvent = READ;
 const int Channel::kWriteEvent = WRITE;
+const int Channel::kAcceptEvent = ACCEPT;
 
 void Channel::update()
 {
@@ -34,12 +35,12 @@ void TCPChannel::HandleEvent(int receiveTime)
     //     if (writeCallback_)
     //         writeCallback_(receiveTime);
     // }
-    if (revents_ & READ) {
+    if (revents_ & (READ| ACCEPT)) {
         if (readCallback_)
-            readCallback_(receiveTime,bid_,buf_);
+            readCallback_(receiveTime);
     }
     if (revents_ & WRITE) {
         if (writeCallback_)
-            writeCallback_(receiveTime,bid_,buf_);
+            writeCallback_(receiveTime);
     }
 }

@@ -1,0 +1,600 @@
+RTT_min: 19 us
+RTT_max: 41258 us
+Count: 2076
+Throughput: 194313 B/s
+Throughput: 189 KB/s
+Throughput: 0MB/s
+RTT_min: 186 us
+RTT_max: 42802 us
+Count: 1868
+Throughput: 174844 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 168 us
+RTT_max: 41108 us
+Count: 1852
+Throughput: 173347 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 75 us
+RTT_max: 41086 us
+Count: 1863
+Throughput: 174376 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 93 us
+RTT_max: 41126 us
+Count: 1861
+Throughput: 174189 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 76 us
+RTT_max: 41705 us
+Count: 1861
+Throughput: 174189 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 91 us
+RTT_max: 41675 us
+Count: 1861
+Throughput: 174189 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 190 us
+RTT_max: 41077 us
+Count: 1874
+Throughput: 175406 B/s
+Throughput: 171 KB/s
+Throughput: 0MB/s
+RTT_min: 28 us
+RTT_max: 41125 us
+Count: 1936
+Throughput: 181209 B/s
+Throughput: 176 KB/s
+Throughput: 0MB/s
+RTT_min: 317 us
+RTT_max: 41707 us
+Count: 1847
+Throughput: 172879 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 75 us
+RTT_max: 42075 us
+Count: 1862
+Throughput: 174283 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 314 us
+RTT_max: 42429 us
+Count: 1847
+Throughput: 172879 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 169 us
+RTT_max: 41122 us
+Count: 1876
+Throughput: 175593 B/s
+Throughput: 171 KB/s
+Throughput: 0MB/s
+RTT_min: 773 us
+RTT_max: 43357 us
+Count: 1842
+Throughput: 172411 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 29 us
+RTT_max: 43581 us
+Count: 1903
+Throughput: 178120 B/s
+Throughput: 173 KB/s
+Throughput: 0MB/s
+RTT_min: 293 us
+RTT_max: 43514 us
+Count: 1845
+Throughput: 172692 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 432 us
+RTT_max: 43984 us
+Count: 1863
+Throughput: 174376 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 260 us
+RTT_max: 42791 us
+Count: 1868
+Throughput: 174844 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 299 us
+RTT_max: 42781 us
+Count: 1847
+Throughput: 172879 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 281 us
+RTT_max: 41094 us
+Count: 1848
+Throughput: 172972 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 319 us
+RTT_max: 41085 us
+Count: 1849
+Throughput: 173066 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 306 us
+RTT_max: 41134 us
+Count: 1849
+Throughput: 173066 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 313 us
+RTT_max: 41179 us
+Count: 1849
+Throughput: 173066 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 275 us
+RTT_max: 41247 us
+Count: 1850
+Throughput: 173160 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 305 us
+RTT_max: 41173 us
+Count: 1849
+Throughput: 173066 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 740 us
+RTT_max: 41192 us
+Count: 1844
+Throughput: 172598 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 370 us
+RTT_max: 41089 us
+Count: 1840
+Throughput: 172224 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 330 us
+RTT_max: 42882 us
+Count: 1859
+Throughput: 174002 B/s
+RTT_min: 430 us
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_max: 42941 us
+Count: 1861
+Throughput: 174189 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 324 us
+RTT_max: 42763 us
+Count: 1861
+Throughput: 174189 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 303 us
+RTT_max: 41062 us
+Count: 1849
+Throughput: 173066 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 1003 us
+RTT_max: 42084 us
+Count: 1844
+Throughput: 172598 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 995 us
+RTT_max: 42090 us
+Count: 1843
+Throughput: 172504 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 733 us
+RTT_max: 41120 us
+Count: 1845
+Throughput: 172692 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 321 us
+RTT_max: 41199 us
+Count: 1850
+Throughput: 173160 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 258 us
+RTT_max: 41228 us
+Count: 1850
+Throughput: 173160 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 531 us
+RTT_max: 41193 us
+Count: 1845
+Throughput: 172692 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 1071 us
+RTT_max: 41218 us
+Count: 1845
+Throughput: 172692 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 258 us
+RTT_max: 41212 us
+Count: 1850
+Throughput: 173160 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 425 us
+RTT_max: 42098 us
+Count: 1862
+Throughput: 174283 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 988 us
+RTT_max: 41922 us
+Count: 1841
+Throughput: 172317 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 1018 us
+RTT_max: 41217 us
+Count: 1846
+Throughput: 172785 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 1019 us
+RTT_max: 41177 us
+Count: 1846
+Throughput: 172785 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 902 us
+RTT_max: 43470 us
+Count: 1846
+Throughput: 172785 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 433 us
+RTT_max: 44079 us
+Count: 1862
+Throughput: 174283 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 431 us
+RTT_max: 42852 us
+Count: 1863
+Throughput: 174376 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 442 us
+RTT_max: 42097 us
+Count: 1861
+Throughput: 174189 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 861 us
+RTT_max: 41079 us
+Count: 1846
+Throughput: 172785 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 861 us
+RTT_max: 41079 us
+Count: 1846
+Throughput: 172785 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 843 us
+RTT_max: 41083 us
+Count: 1846
+Throughput: 172785 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 1291 us
+RTT_max: 41191 us
+Count: 1843
+Throughput: 172504 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 1291 us
+RTT_max: 41194 us
+Count: 1843
+Throughput: 172504 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 432 us
+RTT_max: 44096 us
+Count: 1861
+Throughput: 174189 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 426 us
+RTT_max: 42100 us
+Count: 1860
+Throughput: 174096 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 904 us
+RTT_max: 43981 us
+Count: 1845
+Throughput: 172692 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 419 us
+RTT_max: 42835 us
+Count: 1859
+Throughput: 174002 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 327 us
+RTT_max: 41172 us
+Count: 1842
+Throughput: 172411 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 980 us
+RTT_max: 42976 us
+Count: 1848
+Throughput: 172972 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 1168 us
+RTT_max: 41190 us
+Count: 1849
+Throughput: 173066 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 1061 us
+RTT_max: 41217 us
+Count: 1851
+Throughput: 173253 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 1095 us
+RTT_max: 41219 us
+Count: 1851
+Throughput: 173253 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 1110 us
+RTT_max: 41176 us
+Count: 1851
+Throughput: 173253 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 1065 us
+RTT_max: 41172 us
+Count: 1851
+Throughput: 173253 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 987 us
+RTT_max: 42306 us
+Count: 1849
+Throughput: 173066 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 624 us
+RTT_max: 41215 us
+Count: 1855
+Throughput: 173628 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 325 us
+RTT_max: 41924 us
+Count: 1853
+Throughput: 173440 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 423 us
+RTT_max: 44104 us
+Count: 1871
+Throughput: 175125 B/s
+Throughput: 171 KB/s
+Throughput: 0MB/s
+RTT_min: 652 us
+RTT_max: 44217 us
+Count: 1854
+Throughput: 173534 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 417 us
+RTT_max: 44227 us
+Count: 1872
+Throughput: 175219 B/s
+Throughput: 171 KB/s
+Throughput: 0MB/s
+RTT_min: 681 us
+RTT_max: 41190 us
+Count: 1855
+Throughput: 173628 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 659 us
+RTT_max: 41215 us
+Count: 1857
+Throughput: 173815 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 658 us
+RTT_max: 83256 us
+Count: 1846
+Throughput: 172785 B/s
+Throughput: 168 KB/s
+Throughput: 0MB/s
+RTT_min: 657 us
+RTT_max: 43972 us
+Count: 1856
+Throughput: 173721 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 417 us
+RTT_max: 42795 us
+Count: 1874
+Throughput: 175406 B/s
+Throughput: 171 KB/s
+Throughput: 0MB/s
+RTT_min: 686 us
+RTT_max: 41741 us
+Count: 1858
+Throughput: 173908 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 667 us
+RTT_max: 41211 us
+Count: 1857
+Throughput: 173815 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 661 us
+RTT_max: 41752 us
+Count: 1855
+Throughput: 173628 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 681 us
+RTT_max: 41733 us
+Count: 1858
+Throughput: 173908 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 681 us
+RTT_max: 41077 us
+Count: 1856
+Throughput: 173721 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 665 us
+RTT_max: 41211 us
+Count: 1858
+Throughput: 173908 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 661 us
+RTT_max: 41215 us
+Count: 1858
+Throughput: 173908 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 421 us
+RTT_max: 43456 us
+Count: 1875
+Throughput: 175500 B/s
+Throughput: 171 KB/s
+Throughput: 0MB/s
+RTT_min: 670 us
+RTT_max: 41202 us
+Count: 1857
+Throughput: 173815 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 407 us
+RTT_max: 41207 us
+Count: 1861
+Throughput: 174189 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 316 us
+RTT_max: 41205 us
+Count: 1863
+Throughput: 174376 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 325 us
+RTT_max: 42096 us
+Count: 1859
+Throughput: 174002 B/s
+Throughput: 169 KB/s
+Throughput: 0MB/s
+RTT_min: 321 us
+RTT_max: 41200 us
+Count: 1865
+Throughput: 174564 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 278 us
+RTT_max: 41183 us
+Count: 1866
+Throughput: 174657 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 283 us
+RTT_max: 41201 us
+Count: 1867
+Throughput: 174751 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 247 us
+RTT_max: 41088 us
+Count: 1867
+Throughput: 174751 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 255 us
+RTT_max: 43026 us
+Count: 1867
+Throughput: 174751 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 259 us
+RTT_max: 41786 us
+Count: 1865
+Throughput: 174564 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 228 us
+RTT_max: 42784 us
+Count: 1882
+Throughput: 176155 B/s
+Throughput: 172 KB/s
+Throughput: 0MB/s
+RTT_min: 237 us
+RTT_max: 41938 us
+Count: 1869
+Throughput: 174938 B/s
+Throughput: 170 KB/s
+Throughput: 0MB/s
+RTT_min: 217 us
+RTT_max: 43484 us
+Count: 1873
+Throughput: 175312 B/s
+Throughput: 171 KB/s
+Throughput: 0MB/s
+RTT_min: 91 us
+RTT_max: 48385 us
+Count: 1877
+Throughput: 175687 B/s
+Throughput: 171 KB/s
+Throughput: 0MB/s
+RTT_min: 101 us
+RTT_max: 41233 us
+Count: 1878
+Throughput: 175780 B/s
+Throughput: 171 KB/s
+Throughput: 0MB/s
+RTT_min: 94 us
+RTT_max: 41094 us
+Count: 1881
+Throughput: 176061 B/s
+Throughput: 171 KB/s
+Throughput: 0MB/s
+RTT_min: 134 us
+RTT_max: 41206 us
+Count: 1883
+Throughput: 176248 B/s
+Throughput: 172 KB/s
+Throughput: 0MB/s
+RTT_min: 16 us
+RTT_max: 42772 us
+Count: 2034
+Throughput: 190382 B/s
+Throughput: 185 KB/s
+Throughput: 0MB/s

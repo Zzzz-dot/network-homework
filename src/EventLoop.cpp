@@ -2,14 +2,15 @@
 #include "poll/EpollPoller.h"
 #include "Channel.h"
 #include "poll/UringPoller.h"
+#include "Poller.h"
+
+int EventLoop::timeoutMs_ = 1000;
 
 EventLoop::EventLoop()
     : looping_(false)
     , iterations_(0)
     , onwer_thread_id_(std::this_thread::get_id())
-    , poller_(new UringPoller()) {};
-
-int EventLoop::timeoutMs_ = 1000;
+    , poller_(Poller::newDefaultPoller()) {};
 
 void EventLoop::Loop()
 {
@@ -44,7 +45,8 @@ void EventLoop::NewTask(const PendingTask& task)
     else {
         {
             std::lock_guard<std::mutex> lock(mutex_);
-            tasks_.push_back(std::move(task));
+            // tasks_.push_back(std::move(task));
+            tasks_.push_back(task);
         }
         WakeUp();
     }

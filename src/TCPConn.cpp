@@ -13,13 +13,13 @@ TCPConn::TCPConn(EventLoop* loop, int connfd, const std::string connName, const 
     , channel_(connfd, loop)
 {
     channel_.SetReadCallback(
-        std::bind(&TCPConn::handleRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+        std::bind(&TCPConn::handleRead, this, std::placeholders::_1));
     channel_.SetWriteCallback(
-        std::bind(&TCPConn::handleWrite, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+        std::bind(&TCPConn::handleWrite, this, std::placeholders::_1));
     channel_.SetCloseCallback(
-        std::bind(&TCPConn::handleClose, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+        std::bind(&TCPConn::handleClose, this, std::placeholders::_1));
     channel_.SetErrorCallback(
-        std::bind(&TCPConn::handleError, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+        std::bind(&TCPConn::handleError, this, std::placeholders::_1));
 }
 
 TCPConn::~TCPConn()
@@ -41,11 +41,18 @@ void TCPConn::Send(const void* data, size_t len)
     write(connfd_, data, len);
 }
 
-void TCPConn::handleRead(TimeStamp timeStamp, int bid, void* buf)
+void TCPConn::handleRead(TimeStamp timeStamp)
 {
     assert(state_ == kConnected);
     char readbuf[BUFSIZ];
-    int n = read(connfd_, buf, BUFSIZ);
+    int n;
+    char *buf;
+    if ((n = channel_.GetN()) != -1) {
+        buf=(char *)channel_.ReadBuf();
+    } else {
+        buf=readbuf;
+        n = read(connfd_, buf, BUFSIZ);
+    }
     if (n > 0) {
         messageCallback_(this, buf, n, timeStamp);
     } else if (n == 0) {
@@ -55,12 +62,12 @@ void TCPConn::handleRead(TimeStamp timeStamp, int bid, void* buf)
     }
 }
 
-void TCPConn::handleWrite(TimeStamp timeStamp, int bid, void* buf)
+void TCPConn::handleWrite(TimeStamp timeStamp)
 {
     LOG(INFO) << "Write finish at " << timeStamp << "\n";
 }
 
-void TCPConn::handleClose(TimeStamp timeStamp, int bid, void* buf)
+void TCPConn::handleClose(TimeStamp timeStamp)
 {
     LOG(INFO) << "Connection close at " << timeStamp << "\n";
     state_ = kDisconnecting;
@@ -68,7 +75,7 @@ void TCPConn::handleClose(TimeStamp timeStamp, int bid, void* buf)
     closeCallback_(this, timeStamp);
 }
 
-void TCPConn::handleError(TimeStamp timeStamp, int bid, void* buf)
+void TCPConn::handleError(TimeStamp timeStamp)
 {
     LOG(ERROR) << "Error: " << strerror(errno) <<" at " << timeStamp<<"\n";
 }

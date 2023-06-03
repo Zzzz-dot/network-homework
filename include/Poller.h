@@ -22,6 +22,8 @@ public:
     /// Must be called in the loop thread.
     virtual void RemoveChannel(Channel* channel) = 0;
 
+    static Poller* newDefaultPoller();
+
 protected:
     using ChannelMap = std::map<int, Channel*>;
     ChannelMap channels_;

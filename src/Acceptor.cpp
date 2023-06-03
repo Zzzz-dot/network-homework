@@ -1,6 +1,7 @@
 #include "Acceptor.h"
 #include "LinuxHead.h"
 #include "util.hpp"
+#include <cstring>
 #include <glog/logging.h>
 
 
@@ -12,8 +13,10 @@ Acceptor::Acceptor(EventLoop* loop, const sockaddr_in& listenAddr)
     , acceptChannel_(listenfd_,loop)
 {
     // listenfd_ = socket(AF_INET, SOCK_STREAM, 0);
-    bind(listenfd_, (sockaddr*)&listenAddr_, sizeof(listenAddr_));
-    acceptChannel_.SetReadCallback(std::bind(&Acceptor::handleRead, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+    int e = bind(listenfd_, (sockaddr*)&listenAddr_, sizeof(listenAddr_));
+    if (e < 0)
+        LOG(FATAL) << "Failt to bind to listen: "<<strerror(-e)<<" \n";
+    acceptChannel_.SetReadCallback(std::bind(&Acceptor::handleRead, this, std::placeholders::_1));
 }
 
 void Acceptor::Listen()
@@ -21,17 +24,24 @@ void Acceptor::Listen()
     assert(!listening_);
     {
         listening_ = true;
-        listen(listenfd_, 20);
-        acceptChannel_.EnableReading();
+        int e = listen(listenfd_, 20);
+        if (e < 0)
+            LOG(FATAL) << "Failt to bind to listen: " << strerror(e) << " \n";
+        acceptChannel_.EnableAccepting();
     }
 }
 
-void Acceptor::handleRead(TimeStamp timeStamp,int bid=-1, void* buf=nullptr)
+void Acceptor::handleRead(TimeStamp timeStamp)
 {
     sockaddr_in peerAddr;
     socklen_t addrLen;
+    int connfd;
     // FIXME loop until no more
-    int connfd = accept(listenfd_, (sockaddr*)&peerAddr, &addrLen);
+    if ((connfd = acceptChannel_.GetN()) != -1) {
+        getpeername(connfd, (sockaddr*)&peerAddr, &addrLen);
+    } else {
+        connfd = accept(listenfd_, (sockaddr*)&peerAddr, &addrLen);
+    }
     if (connfd >= 0) {
         LOG(INFO) << "Accept connection from " << convertAddr(peerAddr) <<" at "<<timeStamp<< "\n";
         if (newConnectionCallback_) {

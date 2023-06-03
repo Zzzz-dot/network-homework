@@ -28,6 +28,7 @@ function do_build
     current_dir=$PWD
     
     cd ${TOPDIR}/build && \ 
+    cmake .. -G "Unix Makefiles" && \ 
     cmake --build .
 
     cd $current_dir

@@ -30,6 +30,6 @@ using ReadEventCallback = std::function<void(TCPConnPtr, void*, size_t, TimeStam
 #define BUFCOUNT 1024
 #define BUFSIZE 4096
 #define DEFAULT_PORT 1234
-#define URING_LENGTH 8
+#define URING_LENGTH 1024
 
 #endif

@@ -4,6 +4,7 @@
 #include <poll.h>
 #include <sys/epoll.h>
 #include <glog/logging.h>
+#include <sys/poll.h>
 #include <unistd.h>
 
 const int kNew = -1;
@@ -35,7 +36,7 @@ TimeStamp EpollPoller::Poll(int timeoutMs, ChannelList& activeChannels)
             events_.resize(events_.size() * 2);
         }
     } else if (numEvents == 0) {
-        LOG(INFO)<<"EpollPoller time out after "<<timeoutMs<<" ms\n";
+        // LOG(INFO)<<"EpollPoller time out after "<<timeoutMs<<" ms\n";
         // nothing to do
     } else {
         LOG(ERROR) << "EpollPoller error " << strerror(savedErrno) << " \n";
@@ -48,7 +49,11 @@ void EpollPoller::fillActiveChannels(int numEvents,
 {
     for (int i = 0; i < numEvents; ++i) {
         Channel* channel = static_cast<Channel*>(events_[i].data.ptr);
-        channel->SetRevent(events_[i].events);
+        if (events_[i].events & POLLIN)
+            channel->SetRevent(READ);
+        else if (events_[i].events & POLLOUT)
+            channel->SetRevent(READ);
+        // channel->SetRevent(events_[i].events);
         activeChannels.push_back(channel);
     }
 }
@@ -82,8 +87,16 @@ void EpollPoller::RemoveChannel(Channel* channel)
 void EpollPoller::update(int operation, Channel* channel)
 {
     struct epoll_event event;
-    memset(&event,0,sizeof(epoll_event));
-    event.events = channel->Events();
+    memset(&event, 0, sizeof(epoll_event));
+    if (channel->IsEnableAccepting()) {
+        event.events |= POLLIN;
+    }
+    if (channel->IsEnableReading()) {
+        event.events |= POLLIN;
+    }
+    if (channel->IsEnableWriting()) {
+        event.events |= POLLOUT;
+    }
     event.data.ptr = channel;
     int fd = channel->FD();
     if (epoll_ctl(epollfd_, operation, fd, &event) < 0) {

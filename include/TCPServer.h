@@ -7,6 +7,7 @@
 #include "TCPConn.h"
 #include "LinuxHead.h"
 #include <map>
+#include <netinet/in.h>
 
 class TCPServer {
 
@@ -37,6 +38,7 @@ private:
     int nextConnId_;
     ConnectionMap connections_;
     Acceptor acceptor_;
+    sockaddr_in listenAddr_;
     EventLoop baseLoop_;
     EventLoopThreadPool threadPool_;
 

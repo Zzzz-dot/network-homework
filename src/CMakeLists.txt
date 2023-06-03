@@ -1,6 +1,6 @@
 aux_source_directory(. NetSrc)
 
-set(NetSrc "${NetSrc};./poll/EpollPoller;./poll/UringPoller;")
+set(NetSrc "${NetSrc};./poll/EpollPoller;./poll/UringPoller;./poll/DefaultPoller;")
 
 message("${NetSrc}")
 

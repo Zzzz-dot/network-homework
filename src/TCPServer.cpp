@@ -6,6 +6,7 @@
 void TCPServer::Start()
 {
     if (!started_) {
+        LOG(INFO) << "TCPServer Start at " << convertAddr(listenAddr_) << "\n";
         started_ = true;
         threadPool_.Start();
         acceptor_.Listen();
@@ -19,6 +20,7 @@ TCPServer::TCPServer(const sockaddr_in& listenAddr, const std::string& name, int
     , numThreads_(numThread)
     , nextConnId_(0)
     , acceptor_(&baseLoop_, listenAddr)
+    , listenAddr_(listenAddr)
     , threadPool_(&baseLoop_, numThreads_, name_)
 
 {

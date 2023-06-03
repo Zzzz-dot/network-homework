@@ -52,10 +52,10 @@ private:
     EventCallback writeCompleteCallback_;
     EventCallback closeCallback_;
 
-    void handleRead(TimeStamp timeStamp, int bid=-1,void* buf=nullptr);
-    void handleWrite(TimeStamp timeStamp, int bid = -1, void* buf = nullptr);
-    void handleClose(TimeStamp timeStamp, int bid = -1, void* buf = nullptr);
-    void handleError(TimeStamp timeStamp, int bid = -1, void* buf = nullptr);
+    void handleRead(TimeStamp timeStamp);
+    void handleWrite(TimeStamp timeStamp);
+    void handleClose(TimeStamp timeStamp);
+    void handleError(TimeStamp timeStamp);
 };
 
 #endif

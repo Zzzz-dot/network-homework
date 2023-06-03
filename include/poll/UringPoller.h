@@ -5,6 +5,8 @@
 #include "Poller.h"
 #include <atomic>
 #include <liburing.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
 
 class UringPoller : public Poller {
 public:
@@ -27,21 +29,23 @@ private:
     io_uring ring;
     using EventList = std::vector<epoll_event>;
 
-    char Buffers[BUFCOUNT][BUFSIZE];
+    // char Buffers[BUFCOUNT][BUFSIZE];
 
-    static std::atomic<int> BGID;
-    int bgid;
+    // static std::atomic<int> BGID;
+    // int bgid;
+    sockaddr_in peerAddr;
+    socklen_t peerAddrLen;
 
     struct conn_info {
-        Channel* channel;
-        int type;
-        int bid;
+        __u32 fd;
+        __u32 type;
     };
 
-    void fillActiveChannels(Channel* channel, int revents, int bid, ChannelList& activeChannels);
-    void add_provide_read(Channel* channel, unsigned flags);
-    void add_provide_write(Channel* channel, void* buf, unsigned flags);
-    void add_provide_buffer(int bid);
+    void fillActiveChannels(Channel* channel, int revents, int n, ChannelList& activeChannels);
+    void add_accept(Channel* channel, unsigned flags);
+    void add_read(Channel* channel, unsigned flags);
+    void add_write(Channel* channel, unsigned flags);
+    // void add_provide_buffer(int bid);
 };
 
 
