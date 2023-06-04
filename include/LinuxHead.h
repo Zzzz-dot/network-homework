@@ -26,6 +26,8 @@ using TimeStamp = int;
 using TCPConnPtr = TCPConn*;
 using EventCallback = std::function<void(TCPConnPtr, TimeStamp)>;
 using ReadEventCallback = std::function<void(TCPConnPtr, void*, size_t, TimeStamp)>;
+using FILEReadCallback = std::function<void(void*, size_t, TimeStamp)>;
+using FILEWriteCallback = std::function<void(TimeStamp)>;
 
 #define BUFCOUNT 1024
 #define BUFSIZE 4096

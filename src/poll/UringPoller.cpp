@@ -66,18 +66,17 @@ TimeStamp UringPoller::Poll(int timeoutMs, ChannelList& activeChannels)
             } else {
                 fillActiveChannels(channel, READ, n, activeChannels);
                 channel->Recv();
-                if (n != 0 && channel->IsEnableReading())
+                if (n != 0 && channel->IsEnableReading() && channel->Type() == ChannelType::TCPType)
                     add_read(channel, 0);
             }
         } else if (type == WRITE) {
             int n = cqe->res;
             if (n < 0) {
                 fillActiveChannels(channel, ERROR, n, activeChannels);
+            } else if (n < channel->WriteLen()) {
+                LOG(WARNING) << "msg too long";
             } else {
-                // fillActiveChannels(channel, WRITE, n, activeChannels);
-                // if (n < channel->WriteLen() && channel->IsEnableWriting()) {
-                //     // ADD(channel, 0);
-                // }
+                fillActiveChannels(channel, WRITE, n, activeChannels);
             }
         } else {
             LOG(WARNING) << "unknown type: " << type <<" \n";
@@ -98,10 +97,16 @@ void UringPoller::UpdateChannel(Channel* channel)
         add_accept(channel, 0);
     }
     if (channel->IsEnableReading()) {
-        add_read(channel, 0);
+        if (channel->Type() == ChannelType::TCPType)
+            add_read(channel, 0);
+        else
+            add_read2(channel, 0);
     }
     if (channel->IsEnableWriting()) {
-        add_write(channel, 0);
+        if(channel->Type()==ChannelType::TCPType)
+            add_write(channel, 0);
+        else
+            add_write2(channel, 0);
     }
     // if (channel->IsProvBuffer())
     // {
@@ -177,6 +182,36 @@ void UringPoller::add_write(Channel* channel, unsigned flags)
     struct io_uring_sqe* sqe = io_uring_get_sqe(&ring);
     int fd = channel->FD();
     io_uring_prep_send(sqe, fd, channel->WriteBuf(), channel->WriteLen(), 0);
+    io_uring_sqe_set_flags(sqe, flags);
+
+    conn_info conn_i = {
+        .fd = (__u32)fd,
+        .type = WRITE,
+    };
+    // io_uring_sqe_set_data(sqe, &conn_i);
+    memcpy(&sqe->user_data, &conn_i, sizeof(conn_i));
+}
+
+void UringPoller::add_read2(Channel* channel, unsigned flags)
+{
+    struct io_uring_sqe* sqe = io_uring_get_sqe(&ring);
+    int fd = channel->FD();
+    io_uring_prep_read(sqe, fd, channel->NextReadBuf(), BUFSIZE, 0);
+    io_uring_sqe_set_flags(sqe, flags);
+    // sqe->buf_group = bgid;
+
+    conn_info conn_i = {
+        .fd = (__u32)fd,
+        .type = READ,
+    };
+    // io_uring_sqe_set_data(sqe, &conn_i);
+    memcpy(&sqe->user_data, &conn_i, sizeof(conn_i));
+}
+void UringPoller::add_write2(Channel* channel, unsigned flags)
+{
+    struct io_uring_sqe* sqe = io_uring_get_sqe(&ring);
+    int fd = channel->FD();
+    io_uring_prep_write(sqe, fd, channel->WriteBuf(), channel->WriteLen(), 0);
     io_uring_sqe_set_flags(sqe, flags);
 
     conn_info conn_i = {

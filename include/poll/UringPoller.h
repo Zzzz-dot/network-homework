@@ -45,6 +45,8 @@ private:
     void add_accept(Channel* channel, unsigned flags);
     void add_read(Channel* channel, unsigned flags);
     void add_write(Channel* channel, unsigned flags);
+    void add_read2(Channel* channel, unsigned flags);
+    void add_write2(Channel* channel, unsigned flags);
     // void add_provide_buffer(int bid);
 };
 

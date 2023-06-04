@@ -1,6 +1,8 @@
 #ifndef _CHANNEL_H
 #define _CHANNEL_H
+#include "LinuxHead.h"
 #include <functional>
+#include <string>
 
 // FileChannel 两个事件：可读和可写
 // TCPChannel 四个事件：可读、可写、关闭、错误
@@ -17,7 +19,7 @@ enum {
 };
 class Channel {
 public:
-    using ChannelEventCallback = std::function<void(int)>;
+    using ChannelEventCallback = std::function<void(TimeStamp)>;
     Channel(int fd, EventLoop* loop)
         : events_(0)
         , fd_(fd)
@@ -109,10 +111,12 @@ public:
     // void SetBuf(void* buf) { buf_ = buf; }
     // void* GetBuf() { return buf_; }
     void* NextReadBuf()  { return (void*)readBuf_[(consumeID_ + 1) % 2]; }
-    void* ReadBuf()  { return (void*)readBuf_[consumeID_]; }
-    void* WriteBuf() const { return wirteBuf_; }
+    void* ReadBuf() { return (void*)readBuf_[consumeID_]; }
+    void SetWriteBuf(const void* buf) { wirteBuf_ = buf; }
+    const void* WriteBuf() const { return wirteBuf_; }
     int* ReadLen()  { return &readLen_; }
     int WriteLen() { return writeLen_; }
+    void SetWriteLen(int len) { writeLen_=len; }
     void SetN(int n) { n_ = n; }
     int GetN() { return n_; }
     int FD() const { return fd_; }
@@ -145,7 +149,7 @@ protected:
     int n_;
     char readBuf_[2][1024];
     int readLen_;
-    void* wirteBuf_;
+    const void* wirteBuf_;
     int writeLen_;
     ChannelEventCallback readCallback_;
     ChannelEventCallback writeCallback_;
@@ -161,6 +165,20 @@ public:
         type = ChannelType::TCPType;
     }
     void HandleEvent(int receiveTime) override;
+};
+
+class FILEChannel : public Channel {
+public:
+    FILEChannel(int fd, EventLoop* loop)
+        : Channel(fd, loop)
+    {
+        type = ChannelType::FILEType;
+    }
+    void HandleEvent(int receiveTime) override;
+    std::string FILEChannelName();
+    void SetFileChannelName(const std::string& name);
+private:
+    std::string name_;
 };
 
 #endif

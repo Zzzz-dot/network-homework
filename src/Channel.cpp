@@ -44,3 +44,18 @@ void TCPChannel::HandleEvent(int receiveTime)
             writeCallback_(receiveTime);
     }
 }
+
+void FILEChannel::HandleEvent(int receiveTime)
+{
+    if (revents_ & READ) {
+        if (readCallback_)
+            readCallback_(receiveTime);
+    }
+    if (revents_ & WRITE) {
+        if (writeCallback_)
+            writeCallback_(receiveTime);
+    }
+}
+
+std::string FILEChannel::FILEChannelName(){return name_;}
+void FILEChannel::SetFileChannelName(const std::string& name){name_=name;}
