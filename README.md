@@ -1,3 +1,5 @@
+# 实验报告
+# 姓名：倪孝泽；学号：202121080528
 # 项目介绍
 - 模仿 muduo 项目，实现一个 Reactor 模式服务器模型，实现 EPOLL 以及 URING 两种 Poller
 - 实现两个 Channel，分别是 TCPChannel 以及 FILEChannel
@@ -59,6 +61,62 @@ muduo 中的多线程模型分为以下几种：
 池来处理计算。这种方案适合既有突发 IO （利用多线程处理多个连接上的 IO），又有突发计算的应用（利用线程池把一个连接上的计算任务分配给多个线程去做）。如下图所示：
 ![one loop per thread](fig/one_thread_per_loop+线程池.png)
 ## 3. 系统实现
+系统中主要的源文件包括 `TCPServer.cpp, Acceptor.cpp ,TCPConn.cpp, Channel.cpp, EventLoopThreadPool.cpp, EventLoopThread.cpp, EventLoop.cpp` 以及两个不同的 Poller，分别是 `UringPoller.cpp, EpollPoller.cpp`。另外，针对文件操作，我们还实现了一个 `FILEOperator.cpp`。各个源文件中的类之间的关系如下：
+![类之间的关系](fig/关系图.png)
+
+### 3.1. 各个类的作用
+#### TCPServer
+首先，TCPServer 是创建一个服务端程序的类，其它的类都被包含在这个类中。我们在 examples 中给出的 echo 服务器就是利用这个类，然后对对应的读请求的响应进行设置。初始化 TCPServer 对象之后，并设置相关的处理函数，通过调用 Start() 函数运行服务器。
+
+TCPServer 中有一个 Acceptor 对象用来接收新的连接，接收到新的连接将会创建一个新的 TCPConn 对象放在一个 map 当中，同时 TCPServer 还记录了当前线程所在的事件循环 baseLoop_ 以及一个线程池 threadPool_，后续建立的新的连接将会由这个线程池中的线程处理。
+
+#### Acceptor
+Acceptor 在初始化时将会创建一个套接字 listenfd_ 监听新的连接请求，它会记录其所在的事件循环 loop_，同时创建一个 acceptChannel_ 并加入到事件循环中对后续的新的连接进行处理。
+
+#### TCPConn
+在接收到新的连接之后，会创建一个 TCPConn 对象，该对象保存了连接中用来通信的套接字 connfd_，它会记录其所在的事件循环 loop_，同时创建一个 channel_ 并加入到事件循环中对后续在该套接字上发生的读写请求进行处理。
+
+#### Channel
+Channel 会在 Acceptor 以及 TCPConn 中创建，其中记录了对应的套接字，其所属的事件循环 loop_，以及该 Channel 希望响应的事件 events_，以及当前收到的事件 revents_。在产生事件时，它的 HandleEvent() 函数将会被调用，根据事件的类型不同，最终会调用到 Acceptor 或者 TCPConn，以及 TCPServer 中注册的回调函数。
+
+#### EventLoopThreadPool
+EventLoopThreadPool 管理了线程池中的所有线程，在新的连接建立时，调用其中的 GetNextLoop() 将会在线程池上以 Round Robin 的方式返回一个线程对应的事件循环。
+
+#### EventLoopThread
+EventLoopThread 管理了对应事件循环 loop_，以及处理它的线程 thread_。
+
+#### EventLoop
+EventLoop 包含了一个 poller，以及所有处于等待状态的任务 task_，它在线程启动后将会在一个循环中不断获取 poller 中响应的事件（或者等待超时），如果有 channel 就绪，那么将执行对应 channel 的回调函数，然后执行 task_ 中的任务。
+
+#### Poller
+Poller 中以 map 形式记录所有的 Channel，它有两种实现，分别是 Epoll 以及 Uring。它的虚函数 Poll 将会以 IO 多路复用的形式等待注册的 Channel 中对应的事件产生，UpdateChannel 函数将会向 Poller 注册一个新的 Channel，RemoveChannel 将会从 Poller 中移除对应的 Channel。
+
+#### FILEOperator
+FILEOperator 主要是通过 FILEChannel 并结合 Uring 实现多个文件的异步读写，它需要一次将读写请求放入到其中，然后可以异步的等待所有的读写请求完成，并在完成后调用注册的回调函数。
+
+### 3.2. 整个系统的运行流程
+这里介绍系统运行在 one loop per thread 状态时的运行流程，这要求线程池中的线程数大于 1.
+
+#### 主线程（Reactor）
+Acceptor 运行在主线程，它会接收新的连接，并将对应的连接分发到线程池中的线程。
+1. 首先创建一个 TCPServer 对象，并可以设置自定义的回调函数，然后调用 Start() 函数启动；
+2. Start 函数会启动线程池，它会创建多个线程然后执行循环（循环的过程将在下面提到）；
+3. 然后设置 Acceptor 处于监听状态；
+4. 最后设置当前线程进入循环；
+5. 当前线程的循环将会不断等待 Acceptor 中的监听套接字就绪，并调用相应的处理函数。
+
+#### 线程池
+1. 线程池中的各个线程在系统之后也进入循环；
+2. 在循环中它会以 IO 多路服务的形式轮询所有管理的套接字；
+3. 如果有套接字就绪，那么就会调用相应的处理函数，对其进行处理；
+4. 每一次循环结束时，将会执行所有处于等待队列中的任务。
+
+#### 函数回调
+1. 在某个套接字就绪时，轮询（Poll）的过程将会返回该套接字对应的 Channel，并调用对应的 HandleEvent() 函数；
+2. HandleEvent 函数将会根据返回事件的类型调用 Acceptor 中的 handleRead() 函数或者 TCPConn 中的 handleXXX() 函数；
+3. Acceptor 中的 handleRead() 将会调用 TCPServer::newConnection() 函数，在这个函数中将会把新的连接请求放入对应的事件循环（线程）；
+4. TCPConn 中的 handleXXX() 函数将会进行相应的处理，如果用户自定义了相应的处理函数，那么这个函数也会接着调用用户的处理函数。
+
 
 ## 4. 系统构建
 通过运行 `build.sh` 脚本对项目进行构建
@@ -80,6 +138,8 @@ muduo 中的多线程模型分为以下几种：
 ./build.sh release
 ```
 在完成初始化后，运行上述命令，将会以 Release 模式构建项目，构建结果位于根目录的 release 子目录下。
+### 4.4. 其他
+项目需要构建在支持 liburing，且支持 io_uring_prep_send/io_uring_prep_recv/io_uring_prep_accept 的操作系统。
 
 ## 5. 系统评估
 - `echo_uring.sh` 脚本将会在本机 1234 端口利用 uringPoller 启动一个 echo 服务器；
@@ -88,6 +148,41 @@ muduo 中的多线程模型分为以下几种：
 - `benchmark.sh n` 将会同时运行 n 个 pingpong 测试程序与 echo 服务器进行通信，测试服务器性能；
 - 注意，在运行这些脚本之前，首先在 release 模式下对项目进行构建。
 
+### 5.1. pingpong
+简单地说， ping pong 协议是客户端和服务器都实现 echo 协议。当 TCP 连接立时，客户端向服务器发送一些数据，服务器会 echo 回这些数据，然后客户端再 echo 回服务器。这些数据就会像乒乓球一样在客户端和服务器之间来回传送，直到有一方断开连接为止。这是用来测试吞吐量的常用办法。
+
+### 5.2. EpollPoller vs UringPoller
+我们分别运行 1、10、50、100 个 pingpong 进程与我们的 echo 服务器进行通信，每个 pingpong 进程将会与服务器通信 10s，然后断开连接，具体做法如下：
+```
+// 启动 echo 服务器，并使用 epollPoller
+./echo_epoll.sh
+// 分别并发启动 1、10、50、100 个 pingpong 进程
+./benchmark.sh 1
+./benchmark.sh 10
+./benchmark.sh 50
+./benchmark.sh 100
+```
+
+```
+// 启动 echo 服务器，并使用 uringPoller
+./echo_uring.sh
+// 分别并发启动 1、10、50、100 个 pingpong 进程
+./benchmark.sh 1
+./benchmark.sh 10
+./benchmark.sh 50
+./benchmark.sh 100
+```
+
+对应的测试结果分别位于 epoll_result 以及 uring_result 目录下。
+
+#### 实现结果
+实验结果如下图所示：
+![吞吐量](fig/EpollPollervsUringPoller-1.png)
+![交互次数](fig/EpollPollervsUringPoller-2.png)
+这两张图分别展示了 10s 内，在 pingpong 进程并发数分别为 1、10、50、100 时，echo 服务器的吞吐量以及交互次数。 UringPoller 在这两项指标上都优于 EpollPoller。
+
+### 5.3. FileChannel
+我们在 fileop 文件下运行 fileop.sh，它将会运行 fileop 程序，这个程序将同时打开 10 个文件从中读取，并打开 10 个文件往其中写入。读取和写入完成之后将会调用相应的回调函数，显示读取或者打印成功。
 
 
 ## 6. 依赖项
