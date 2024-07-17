@@ -1,5 +1,3 @@
-# 实验报告
-# 姓名：倪孝泽；学号：202121080528
 # 项目介绍
 - 模仿 muduo 项目，实现一个 Reactor 模式服务器模型，实现 EPOLL 以及 URING 两种 Poller
 - 实现两个 Channel，分别是 TCPChannel 以及 FILEChannel
